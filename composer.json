@@ -1,0 +1,40 @@
+{
+  "name": "alex-patterson-webdev/laminas-symfony-console",
+  "description": "Symfony console application integration to the Laminas Framework",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Alex Patterson",
+      "email": "alex.patterson.webdev@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.4",
+    "symfony/console": "^5.1",
+    "laminas/laminas-mvc": "^3.1",
+    "alex-patterson-webdev/laminas-factory": "^1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Arp\\LaminasSymfonyConsole\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "ArpTest\\LaminasSymfonyConsole\\": "test/phpunit"
+    }
+  },
+  "scripts": {
+    "test": "phpunit --coverage-clover=coverage.xml"
+  },
+  "config": {
+    "preferred-install": "dist",
+    "optimize-autoloader": true,
+    "sort-packages": true
+  }
+}
