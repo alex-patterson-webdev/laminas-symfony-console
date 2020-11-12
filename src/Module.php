@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Arp\LaminasSymfonyConsole;
 
-use Arp\LaminasSymfonyConsole\Service\ConsoleCommandConfigProviderInterface;
-use Arp\LaminasSymfonyConsole\Service\ConsoleCommandManager;
+use Arp\LaminasSymfonyConsole\Service\CommandConfigProviderInterface;
+use Arp\LaminasSymfonyConsole\Service\CommandManager;
 use Laminas\ModuleManager\Listener\ServiceListenerInterface;
 use Laminas\ModuleManager\ModuleManager;
 use Laminas\ModuleManager\ModuleManagerInterface;
@@ -37,9 +37,9 @@ final class Module
         $serviceListener = $container->get('ServiceListener');
 
         $serviceListener->addServiceManager(
-            ConsoleCommandManager::class,
+            CommandManager::class,
             'laminas_symfony_console',
-            ConsoleCommandConfigProviderInterface::class,
+            CommandConfigProviderInterface::class,
             'getConsoleCommandConfig'
         );
     }

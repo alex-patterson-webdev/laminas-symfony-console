@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace Arp\LaminasSymfonyConsole\Service;
 
+use Laminas\ServiceManager\AbstractPluginManager;
+use Symfony\Component\Console\Command\Command;
+
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\LaminasSymfonyConsole\Service
  */
-interface ConsoleCommandConfigProviderInterface
+class CommandManager extends AbstractPluginManager
 {
     /**
-     * Return the service configuration for the console command manager.
-     *
-     * @return array
+     * @var string
      */
-    public function getConsoleCommandConfig(): array;
+    protected $instanceOf = Command::class;
 }
