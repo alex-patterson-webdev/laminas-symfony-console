@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Arp\LaminasSymfonyConsole\Factory\Service;
+namespace Arp\LaminasSymfonyConsole\Factory\Module;
 
 use Arp\LaminasFactory\AbstractFactory;
-use Arp\LaminasSymfonyConsole\Service\CommandManager;
+use Arp\LaminasSymfonyConsole\Module\CommandManager;
 use Interop\Container\ContainerInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasSymfonyConsole\Factory\Service
+ * @package Arp\LaminasSymfonyConsole\Factory\Module
  */
-final class ConsoleCommandManagerFactory extends AbstractFactory
+final class CommandManagerFactory extends AbstractFactory
 {
     /**
      * @param ContainerInterface $container
@@ -25,7 +25,7 @@ final class ConsoleCommandManagerFactory extends AbstractFactory
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null): CommandManager
     {
-        $config = $options ?? $this->getApplicationOptions($container, 'laminas_symfony_console');
+        $config = $options ?? $this->getApplicationOptions($container, 'arp_console_command_manager');
 
         return new CommandManager($container, $config);
     }
