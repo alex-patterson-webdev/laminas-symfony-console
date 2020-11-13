@@ -66,8 +66,8 @@ final class ApplicationFactory extends AbstractFactory
 
         if (!empty($options['helpers'])) {
             $helperSet = $application->getHelperSet();
-            foreach ($this->getHelpers($container, $options['helpers'], $requestedName) as $helper) {
-                $helperSet->set($helper);
+            foreach ($this->getHelpers($container, $options['helpers'], $requestedName) as $alias => $helper) {
+                $helperSet->set($helper, $alias);
             }
         }
 
@@ -181,7 +181,7 @@ final class ApplicationFactory extends AbstractFactory
         $helperManager = $container->get(HelperManager::class);
 
         $helpers = [];
-        foreach ($helperConfig as $helper) {
+        foreach ($helperConfig as $name => $helper) {
             if (is_string($helper)) {
                 $helper = $this->getService($helperManager, $helper, $serviceName);
             }
@@ -197,7 +197,8 @@ final class ApplicationFactory extends AbstractFactory
                 );
             }
 
-            $helpers[] = $helper;
+            $name = is_string($name) ? $name : $helper->getName();
+            $helpers[$name] = $helper;
         }
 
         return $helpers;
