@@ -14,6 +14,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\CommandLoader\CommandLoaderInterface;
 use Symfony\Component\Console\Helper\HelperInterface;
 use Symfony\Component\Console\Helper\HelperSet;
+use Symfony\Component\Console\Input\InputOption;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -54,10 +55,6 @@ final class ApplicationFactory extends AbstractFactory
             );
         }
 
-        if (!empty($options['commands'])) {
-            $application->addCommands($this->getCommands($container, $options['commands'], $requestedName));
-        }
-
         if (!empty($options['helper_set'])) {
             if (is_string($options['helper_set'])) {
                 $options['helper_set'] = $this->getService($container, $options['helper_set'], $requestedName);
@@ -74,6 +71,10 @@ final class ApplicationFactory extends AbstractFactory
             }
         }
 
+        if (!empty($options['commands'])) {
+            $application->addCommands($this->getCommands($container, $options['commands'], $requestedName));
+        }
+
         if (isset($options['auto_exit'])) {
             $application->setAutoExit((bool)$options['auto_exit']);
         }
@@ -86,7 +87,14 @@ final class ApplicationFactory extends AbstractFactory
             $application->setDefaultCommand($options['default_command']);
         }
 
-        // @todo $application->setDispatcher();
+        if (!empty($options['global_input_options'])) {
+            $this->registerGlobalInputOptions(
+                $container,
+                $application,
+                $options['global_input_options'],
+                $requestedName
+            );
+        }
 
         return $application;
     }
@@ -193,5 +201,38 @@ final class ApplicationFactory extends AbstractFactory
         }
 
         return $helpers;
+    }
+
+    /**
+     * Add a collection of options to all currently registered commands
+     *
+     * @param ContainerInterface $container
+     * @param Application        $application
+     * @param array              $inputOptions
+     * @param string             $serviceName
+     */
+    private function registerGlobalInputOptions(
+        ContainerInterface $container,
+        Application $application,
+        array $inputOptions,
+        string $serviceName
+    ): void {
+        $options = [];
+        foreach ($inputOptions as $inputOption) {
+            if (is_string($inputOption)) {
+                $inputOption = $this->getService($container, $inputOption, $serviceName);
+            }
+            if ($inputOption instanceof InputOption) {
+                $options[$inputOption->getName()] = $inputOption;
+            }
+        }
+
+        if (empty($options)) {
+            return;
+        }
+
+        foreach ($application->all() as $name => $command) {
+            $command->getDefinition()->addOptions($options);
+        }
     }
 }
