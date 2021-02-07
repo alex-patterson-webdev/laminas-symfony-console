@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Arp\LaminasSymfonyConsole\Factory\Service;
 
 use Arp\LaminasFactory\AbstractFactory;
-use Arp\LaminasFactory\Exception\ServiceNotCreatedException;
 use Arp\LaminasSymfonyConsole\Module\CommandManager;
 use Arp\LaminasSymfonyConsole\Module\HelperManager;
 use Arp\LaminasSymfonyConsole\Service\Application;
 use Interop\Container\ContainerInterface;
+use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\CommandLoader\CommandLoaderInterface;
 use Symfony\Component\Console\Helper\HelperInterface;
@@ -43,8 +43,8 @@ final class ApplicationFactory extends AbstractFactory
     {
         $options = $options ?? $this->getServiceOptions($container, $requestedName);
 
-        $name = $options['name'] ?? static::NAME_UNKNOWN;
-        $version = $options['version'] ?? static::VERSION_UNKNOWN;
+        $name = $options['name'] ?? self::NAME_UNKNOWN;
+        $version = $options['version'] ?? self::VERSION_UNKNOWN;
 
         /** @var Application $application */
         $application = new $this->defaultClassName($name, $version);
@@ -100,9 +100,9 @@ final class ApplicationFactory extends AbstractFactory
     }
 
     /**
-     * @param ContainerInterface $container
+     * @param ContainerInterface            $container
      * @param CommandLoaderInterface|string $commandLoader
-     * @param string $serviceName
+     * @param string                        $serviceName
      *
      * @return CommandLoaderInterface
      */
