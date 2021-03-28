@@ -8,8 +8,9 @@ use Arp\LaminasFactory\AbstractFactory;
 use Arp\LaminasSymfonyConsole\Module\CommandManager;
 use Arp\LaminasSymfonyConsole\Module\HelperManager;
 use Arp\LaminasSymfonyConsole\Service\Application;
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
+use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\CommandLoader\CommandLoaderInterface;
 use Symfony\Component\Console\Helper\HelperInterface;
@@ -33,13 +34,14 @@ final class ApplicationFactory extends AbstractFactory
     /**
      * @param ContainerInterface $container
      * @param string             $requestedName
-     * @param array|null         $options
+     * @param array<mixed>|null  $options
      *
      * @return Application
      *
-     * @noinspection PhpMissingParamTypeInspection
+     * @throws ServiceNotCreatedException
+     * @throws ServiceNotFoundException
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): Application
+    public function __invoke(ContainerInterface $container, string $requestedName, array $options = null): Application
     {
         $options = $options ?? $this->getServiceOptions($container, $requestedName);
 
@@ -105,6 +107,9 @@ final class ApplicationFactory extends AbstractFactory
      * @param string                        $serviceName
      *
      * @return CommandLoaderInterface
+     *
+     * @throws ServiceNotCreatedException
+     * @throws ServiceNotFoundException
      */
     private function getCommandLoader(
         ContainerInterface $container,
@@ -131,12 +136,13 @@ final class ApplicationFactory extends AbstractFactory
 
     /**
      * @param ContainerInterface $container
-     * @param array              $data
+     * @param array<mixed>       $data
      * @param string             $serviceName
      *
-     * @return array
+     * @return array<mixed>
      *
      * @throws ServiceNotCreatedException
+     * @throws ServiceNotFoundException
      */
     private function getCommands(ContainerInterface $container, array $data, string $serviceName): array
     {
@@ -168,12 +174,13 @@ final class ApplicationFactory extends AbstractFactory
 
     /**
      * @param ContainerInterface $container
-     * @param array              $helperConfig
+     * @param array<mixed>       $helperConfig
      * @param string             $serviceName
      *
      * @return HelperInterface[]
      *
      * @throws ServiceNotCreatedException
+     * @throws ServiceNotFoundException
      */
     private function getHelpers(ContainerInterface $container, array $helperConfig, string $serviceName): array
     {
@@ -209,8 +216,11 @@ final class ApplicationFactory extends AbstractFactory
      *
      * @param ContainerInterface $container
      * @param Application        $application
-     * @param array              $inputOptions
+     * @param array<mixed>       $inputOptions
      * @param string             $serviceName
+     *
+     * @throws ServiceNotCreatedException
+     * @throws ServiceNotFoundException
      */
     private function registerGlobalInputOptions(
         ContainerInterface $container,
