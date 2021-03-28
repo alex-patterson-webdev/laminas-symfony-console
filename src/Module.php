@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Arp\LaminasSymfonyConsole;
 
-use Arp\LaminasSymfonyConsole\Service\ConsoleCommandConfigProviderInterface;
-use Arp\LaminasSymfonyConsole\Service\ConsoleCommandManager;
+use Arp\LaminasSymfonyConsole\Module\CommandManager;
+use Arp\LaminasSymfonyConsole\Module\Feature\CommandConfigProviderInterface;
+use Arp\LaminasSymfonyConsole\Module\Feature\HelperConfigProviderInterface;
+use Arp\LaminasSymfonyConsole\Module\HelperManager;
 use Laminas\ModuleManager\Listener\ServiceListenerInterface;
 use Laminas\ModuleManager\ModuleManager;
 use Laminas\ModuleManager\ModuleManagerInterface;
@@ -25,22 +27,21 @@ final class Module
         /** @var ContainerInterface $serviceManager */
         $serviceManager = $moduleManager->getEvent()->getParam('ServiceManager');
 
-        $this->bootstrapConsoleCommandManager($serviceManager);
-    }
-
-    /**
-     * @param ContainerInterface $container
-     */
-    private function bootstrapConsoleCommandManager(ContainerInterface $container): void
-    {
         /** @var ServiceListenerInterface $serviceListener */
-        $serviceListener = $container->get('ServiceListener');
+        $serviceListener = $serviceManager->get('ServiceListener');
 
         $serviceListener->addServiceManager(
-            ConsoleCommandManager::class,
-            'laminas_symfony_console',
-            ConsoleCommandConfigProviderInterface::class,
-            'getConsoleCommandConfig'
+            CommandManager::class,
+            'arp_console_command_manager',
+            CommandConfigProviderInterface::class,
+            'getConsoleCommandManagerConfig'
+        );
+
+        $serviceListener->addServiceManager(
+            HelperManager::class,
+            'arp_console_helper_manager',
+            HelperConfigProviderInterface::class,
+            'getConsoleHelperManagerConfig'
         );
     }
 
