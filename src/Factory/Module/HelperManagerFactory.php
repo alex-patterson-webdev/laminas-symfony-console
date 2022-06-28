@@ -9,6 +9,7 @@ use Arp\LaminasSymfonyConsole\Module\HelperManager;
 use Laminas\ServiceManager\Exception\InvalidArgumentException;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -27,6 +28,7 @@ final class HelperManagerFactory extends AbstractFactory
      * @throws InvalidArgumentException
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
+     * @throws ContainerExceptionInterface
      */
     public function __invoke(ContainerInterface $container, string $requestedName, array $options = null): HelperManager
     {

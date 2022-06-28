@@ -10,7 +10,9 @@ use Arp\LaminasSymfonyConsole\Module\HelperManager;
 use Arp\LaminasSymfonyConsole\Service\Application;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\CommandLoader\CommandLoaderInterface;
 use Symfony\Component\Console\Helper\HelperInterface;
@@ -40,6 +42,7 @@ final class ApplicationFactory extends AbstractFactory
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
+     * @throws ContainerExceptionInterface
      */
     public function __invoke(ContainerInterface $container, string $requestedName, array $options = null): Application
     {
@@ -110,6 +113,7 @@ final class ApplicationFactory extends AbstractFactory
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
+     * @throws ContainerExceptionInterface
      */
     private function getCommandLoader(
         ContainerInterface $container,
@@ -141,8 +145,8 @@ final class ApplicationFactory extends AbstractFactory
      *
      * @return array<mixed>
      *
-     * @throws ServiceNotCreatedException
-     * @throws ServiceNotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     private function getCommands(ContainerInterface $container, array $data, string $serviceName): array
     {
@@ -179,8 +183,8 @@ final class ApplicationFactory extends AbstractFactory
      *
      * @return HelperInterface[]
      *
-     * @throws ServiceNotCreatedException
-     * @throws ServiceNotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     private function getHelpers(ContainerInterface $container, array $helperConfig, string $serviceName): array
     {
@@ -221,6 +225,7 @@ final class ApplicationFactory extends AbstractFactory
      *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
+     * @throws ContainerExceptionInterface
      */
     private function registerGlobalInputOptions(
         ContainerInterface $container,
@@ -242,7 +247,7 @@ final class ApplicationFactory extends AbstractFactory
             return;
         }
 
-        foreach ($application->all() as $name => $command) {
+        foreach ($application->all() as $command) {
             $command->getDefinition()->addOptions($options);
         }
     }
