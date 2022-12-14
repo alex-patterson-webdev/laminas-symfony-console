@@ -11,16 +11,17 @@ use Arp\LaminasSymfonyConsole\Module\HelperManager;
 use Laminas\ModuleManager\Listener\ServiceListenerInterface;
 use Laminas\ModuleManager\ModuleManager;
 use Laminas\ModuleManager\ModuleManagerInterface;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasSymfonyConsole
- */
 final class Module
 {
     /**
-     * @param ModuleManagerInterface|ModuleManager $moduleManager
+     * @param ModuleManagerInterface&ModuleManager $moduleManager
+     *
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function init(ModuleManagerInterface $moduleManager): void
     {
@@ -46,7 +47,7 @@ final class Module
     }
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     public function getConfig(): array
     {
