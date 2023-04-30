@@ -1,7 +1,7 @@
 vendor/
 .idea/
+test/coverage/
 composer.phar
 .phpunit.result.cache
 .php_cs.cache
-coverage.xml
-clover.xml
+.php-cs-fixer.cache
