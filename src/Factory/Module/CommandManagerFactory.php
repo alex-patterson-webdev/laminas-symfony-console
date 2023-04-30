@@ -12,19 +12,9 @@ use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasSymfonyConsole\Factory\Module
- */
 final class CommandManagerFactory extends AbstractFactory
 {
     /**
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array<mixed>|null  $options
-     *
-     * @return CommandManager
-     *
      * @throws InvalidArgumentException
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException

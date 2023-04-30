@@ -19,27 +19,14 @@ use Symfony\Component\Console\Helper\HelperInterface;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\InputOption;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasSymfonyConsole\Factory\Service
- */
 final class ApplicationFactory extends AbstractFactory
 {
     private const NAME_UNKNOWN = 'UNKNOWN';
     private const VERSION_UNKNOWN = 'UNKNOWN';
 
-    /**
-     * @var string
-     */
     private string $defaultClassName = Application::class;
 
     /**
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array<mixed>|null  $options
-     *
-     * @return Application
-     *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
      * @throws ContainerExceptionInterface
@@ -105,19 +92,13 @@ final class ApplicationFactory extends AbstractFactory
     }
 
     /**
-     * @param ContainerInterface            $container
-     * @param CommandLoaderInterface|string $commandLoader
-     * @param string                        $serviceName
-     *
-     * @return CommandLoaderInterface
-     *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
      * @throws ContainerExceptionInterface
      */
     private function getCommandLoader(
         ContainerInterface $container,
-        $commandLoader,
+        CommandLoaderInterface|string $commandLoader,
         string $serviceName
     ): CommandLoaderInterface {
         if (is_string($commandLoader)) {
@@ -129,7 +110,7 @@ final class ApplicationFactory extends AbstractFactory
                 sprintf(
                     'The command loader must be an object of type \'%s\'; \'%s\' provided for service \'%s\'',
                     CommandLoaderInterface::class,
-                    (is_object($commandLoader) ? get_class($commandLoader) : gettype($commandLoader)),
+                    get_debug_type($commandLoader),
                     $serviceName
                 )
             );
@@ -139,12 +120,6 @@ final class ApplicationFactory extends AbstractFactory
     }
 
     /**
-     * @param ContainerInterface $container
-     * @param array<mixed>       $data
-     * @param string             $serviceName
-     *
-     * @return array<mixed>
-     *
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
@@ -164,7 +139,7 @@ final class ApplicationFactory extends AbstractFactory
                     sprintf(
                         'The command must be an object of type \'%s\'; \'%s\' provided for service \'%s\'',
                         Command::class,
-                        (is_object($command) ? get_class($command) : gettype($command)),
+                        get_debug_type($command),
                         $serviceName
                     )
                 );
@@ -177,11 +152,7 @@ final class ApplicationFactory extends AbstractFactory
     }
 
     /**
-     * @param ContainerInterface $container
-     * @param array<mixed>       $helperConfig
-     * @param string             $serviceName
-     *
-     * @return HelperInterface[]
+     * @return array<string, HelperInterface>
      *
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -202,7 +173,7 @@ final class ApplicationFactory extends AbstractFactory
                     sprintf(
                         'The command must be an object of type \'%s\'; \'%s\' provided for service \'%s\'',
                         HelperInterface::class,
-                        (is_object($helper) ? get_class($helper) : gettype($helper)),
+                        get_debug_type($helper),
                         $serviceName
                     )
                 );
@@ -216,13 +187,6 @@ final class ApplicationFactory extends AbstractFactory
     }
 
     /**
-     * Add a collection of options to all currently registered commands
-     *
-     * @param ContainerInterface $container
-     * @param Application        $application
-     * @param array<mixed>       $inputOptions
-     * @param string             $serviceName
-     *
      * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
      * @throws ContainerExceptionInterface

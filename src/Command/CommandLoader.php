@@ -9,37 +9,14 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\CommandLoader\CommandLoaderInterface;
 use Symfony\Component\Console\Exception\CommandNotFoundException;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\LaminasSymfonyConsole\Command
- */
 class CommandLoader implements CommandLoaderInterface
 {
-    /**
-     * @var CommandManager
-     */
-    private CommandManager $commandManager;
-
-    /**
-     * @var array
-     */
-    private array $mapping;
-
-    /**
-     * @param CommandManager $commandManager
-     * @param array          $mapping
-     */
-    public function __construct(CommandManager $commandManager, array $mapping)
-    {
-        $this->commandManager = $commandManager;
-        $this->mapping = $mapping;
+    public function __construct(
+        private readonly CommandManager $commandManager,
+        private readonly array $mapping
+    ) {
     }
 
-    /**
-     * @param string $name
-     *
-     * @return Command
-     */
     public function get(string $name): Command
     {
         $serviceName = $this->mapping[$name] ?? $name;
@@ -53,14 +30,9 @@ class CommandLoader implements CommandLoaderInterface
         return $this->get($serviceName);
     }
 
-    /**
-     * @param string $name
-     *
-     * @return bool
-     */
     public function has(string $name): bool
     {
-        $serviceName = $this->mapping[$name] ?? $name;
+        return false;
     }
 
     public function getNames()
